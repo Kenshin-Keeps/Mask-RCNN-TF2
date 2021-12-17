@@ -1947,7 +1947,7 @@ class MaskRCNN():
                     config = super(AnchorsLayer, self).get_config()
                     return config
             anchors = AnchorsLayer(anchors, name="anchors")(input_image)
-		else:
+        else:
             anchors = input_anchors
 
         # RPN Model
