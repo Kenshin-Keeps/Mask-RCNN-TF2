@@ -2174,7 +2174,7 @@ class MaskRCNN():
         """
         self.keras_model.metrics_tensors = []
         # Optimizer object
-        optimizer = keras.optimizers.SGD(
+        optimizer = tensorflow.keras.optimizers.SGD(
             lr=learning_rate, momentum=momentum,
             clipnorm=self.config.GRADIENT_CLIP_NORM)
         # Add Losses
