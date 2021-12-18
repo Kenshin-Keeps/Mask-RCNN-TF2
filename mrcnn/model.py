@@ -17,12 +17,12 @@ from collections import OrderedDict
 import multiprocessing
 import numpy as np
 import tensorflow as tf
-tf.compat.v1.disable_eager_execution()
 import keras
 import keras.backend as K
 import keras.layers as KL
 import keras.engine as KE
 from keras.layers import Layer
+# from tensorflow.python.eager import context
 import keras.models as KM
 
 from mrcnn import utils
@@ -2180,8 +2180,8 @@ class MaskRCNN():
             clipnorm=self.config.GRADIENT_CLIP_NORM)
         # Add Losses
         # First, clear previously set losses to avoid duplication
-        self.keras_model._losses = []
-        self.keras_model._per_input_losses = {}
+        # self.keras_model._losses = []
+        # self.keras_model._per_input_losses = {}
         loss_names = [
             "rpn_class_loss",  "rpn_bbox_loss",
             "mrcnn_class_loss", "mrcnn_bbox_loss", "mrcnn_mask_loss"]
@@ -2192,7 +2192,8 @@ class MaskRCNN():
             # print(str(self.keras_model.losses))
             # print(str(layer.output))
             # print("AAAAAAAAAAAA ", str(layer.output) in str(self.keras_model.losses))
-            loss = tf.reduce_mean(layer.output, keepdims=True) * self.config.LOSS_WEIGHTS.get(name, 1.)
+            loss = (tf.reduce_mean(layer.output, keepdims=True) 
+                    * self.config.LOSS_WEIGHTS.get(name, 1.))
             self.keras_model.add_loss(loss)
             # tf.cond(tf.constant(layer.output in self.keras_model.losses), lambda: 1, lambda: self.keras_model.add_loss(tf.reduce_mean(layer.output, keepdims=True) * self.config.LOSS_WEIGHTS.get(name, 1.)))
             # tf.cond(tf.constant(layer.output in self.keras_model.losses), lambda: 1, lambda: self.keras_model.add_loss(tf.reduce_mean(layer.output, keepdims=True) * self.config.LOSS_WEIGHTS.get(name, 1.)))
