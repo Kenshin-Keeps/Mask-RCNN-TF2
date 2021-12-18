@@ -17,6 +17,7 @@ from collections import OrderedDict
 import multiprocessing
 import numpy as np
 import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
 import keras
 import keras.backend as K
 import keras.layers as KL
@@ -2179,8 +2180,8 @@ class MaskRCNN():
             clipnorm=self.config.GRADIENT_CLIP_NORM)
         # Add Losses
         # First, clear previously set losses to avoid duplication
-        # self.keras_model._losses = []
-        # self.keras_model._per_input_losses = {}
+        self.keras_model._losses = []
+        self.keras_model._per_input_losses = {}
         loss_names = [
             "rpn_class_loss",  "rpn_bbox_loss",
             "mrcnn_class_loss", "mrcnn_bbox_loss", "mrcnn_mask_loss"]
